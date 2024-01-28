@@ -6,7 +6,7 @@ dotenv.config();
 
 const start = async () => {
   const app = express();
-  const port = process.env.PORT || 2000;
+  const port = process.env.PORT || 3000;
   app.use(express.json());
 
   const WebinarSchema = new mongoose.Schema({
