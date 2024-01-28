@@ -54,7 +54,7 @@ const start = async () => {
   // For delete
   const deleteData = async (req, res) => {
     const webId = req.params.id;
-   // console.log(webId);
+    // console.log(webId);
     const webinar = await Webinar.deleteOne({ _id: webId });
     //console.log(webId);
     res.json({ success: "Record deleted" });

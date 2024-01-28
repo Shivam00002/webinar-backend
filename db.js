@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
-const URI = "mongodb+srv://dubey02shiv:shivamwebinar@cluster0.midsejp.mongodb.net/";
+
 
 
 const connectDb = async () => {
     try {
-        await mongoose.connect(URI);
+        await mongoose.connect(process.env.URI);
         console.log("connection successful to DB");
 
     } catch (error) {
