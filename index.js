@@ -19,13 +19,14 @@ const start = async () => {
     date: String,
     time: String,
     price: String,
+    video_url: String
   });
 
   const Webinar = mongoose.model('Webinar', WebinarSchema);
 
   // Post data
   const create = async (req, res) => {
-    const { title, teacher_name, description, teacher_img, date, time, price } = req.body;
+    const { title, teacher_name, description, teacher_img, date, time, price , video_url} = req.body;
 
     const webinar = await Webinar.create({
       title,
@@ -34,7 +35,8 @@ const start = async () => {
       teacher_img,
       date,
       time,
-      price
+      price,
+      video_url
     });
 
     res.json({ Webinar: webinar });
