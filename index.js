@@ -1,13 +1,13 @@
 const express = require("express");
 const dotenv = require('dotenv');
-const { mongoose } = require("mongoose")
+const mongoose = require("mongoose");
 var cors = require('cors');
 const connectDb = require("./db");
 dotenv.config();
 
 const start = async () => {
   const app = express();
-  app.use(cors())
+  app.use(cors());
   const port = process.env.PORT || 3000;
   app.use(express.json());
 
@@ -26,7 +26,7 @@ const start = async () => {
 
   // Post data
   const create = async (req, res) => {
-    const { title, teacher_name, description, teacher_img, date, time, price , video_url} = req.body;
+    const { title, teacher_name, description, teacher_img, date, time, price, video_url } = req.body;
 
     const webinar = await Webinar.create({
       title,
@@ -51,22 +51,32 @@ const start = async () => {
   // Find by id
   const fetchWebinar = async (req, res) => {
     const WebinarId = req.params.id;
-    const Webinar = await Webinar.findById(WebinarId);
-    res.json({ Webinar: Webinar });
+    try {
+      const webinarById = await Webinar.findById(WebinarId);
+      if (!webinarById) {
+        return res.status(404).json({ error: "Webinar not found" });
+      }
+      res.json({ Webinar: webinarById });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   };
+
+
+
 
   // For delete
   const deleteData = async (req, res) => {
     const webId = req.params.id;
-    // console.log(webId);
     const webinar = await Webinar.deleteOne({ _id: webId });
-    //console.log(webId);
     res.json({ success: "Record deleted" });
   };
 
   app.post("/data", create);
   app.get("/data", getData);
   app.delete('/data/:id', deleteData);
+  app.get('/data/:id', fetchWebinar);
 
   connectDb().then(() => {
     app.listen(port, () => {
