@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require('dotenv');
 const mongoose = require("mongoose");
+const multer = require('multer');
 var cors = require('cors');
 const connectDb = require("./db");
 dotenv.config();
@@ -42,6 +43,7 @@ const start = async () => {
     res.json({ Webinar: webinar });
   };
 
+
   // Get all data
   const getData = async (req, res) => {
     const Webinars = await Webinar.find();
@@ -62,22 +64,29 @@ const start = async () => {
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
-
-
-
-
-  // For delete
   const deleteData = async (req, res) => {
     const webId = req.params.id;
     const webinar = await Webinar.deleteOne({ _id: webId });
     res.json({ success: "Record deleted" });
   };
 
-  app.post("/data", create);
+
+
+  const imageStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'image/')
+    },
+    filename: function (req, file, cb) {
+      return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
+    }
+  })
+
+  const imageUpload = multer({ storage: imageStorage })
+
+  app.post("/data", imageUpload.single('image'), create);
   app.get("/data", getData);
   app.delete('/data/:id', deleteData);
   app.get('/data/:id', fetchWebinar);
-
   connectDb().then(() => {
     app.listen(port, () => {
       console.log(`Server is running at port ${port}`);
