@@ -23,6 +23,7 @@ const start = async () => {
     video_url: String
   });
 
+
   const Webinar = mongoose.model('Webinar', WebinarSchema);
 
   // Post data
