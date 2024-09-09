@@ -24,6 +24,7 @@ const start = async () => {
   });
 
 
+
   const Webinar = mongoose.model('Webinar', WebinarSchema);
 
   // Post data
