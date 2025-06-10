@@ -12,8 +12,6 @@ const start = async () => {
   const port = process.env.PORT || 3000;
   app.use(express.json());
 
-
-
   const WebinarSchema = new mongoose.Schema({
     title: String,
     teacher_name: String,
